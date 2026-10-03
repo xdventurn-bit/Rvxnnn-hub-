@@ -491,5 +491,22 @@
             location.reload();
         }, 900000);
     </script>
+<script>
+    // Permet de retourner à l'accueil en cliquant sur le logo en haut à gauche
+    document.addEventListener('DOMContentLoaded', () => {
+        const logo = document.querySelector('header svg, .logo, header img, [class*="logo"]');
+        if (logo) {
+            logo.style.cursor = 'pointer';
+            logo.addEventListener('click', () => {
+                const landing = document.getElementById('landing-page');
+                if (landing) {
+                    landing.style.display = 'flex';
+                    landing.style.opacity = '1';
+                    landing.style.visibility = 'visible';
+                }
+            });
+        
+  </script>
+    
 </body>
     </html>
