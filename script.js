@@ -113,3 +113,44 @@ try {
 } catch(e) {
     console.log("Erreur Twitch Embed");
 }
+// --- 1. Gestion du menu coulissant (Slide Menu) ---
+const menuBtn = document.getElementById('menu-btn');
+const closeBtn = document.getElementById('close-btn');
+const slideMenu = document.getElementById('slide-menu');
+const menuOverlay = document.getElementById('menu-overlay');
+
+function toggleMenu() {
+    if (slideMenu && menuOverlay) {
+        slideMenu.classList.toggle('open');
+        menuOverlay.classList.toggle('active');
+    }
+}
+
+if (menuBtn) menuBtn.addEventListener('click', toggleMenu);
+if (closeBtn) closeBtn.addEventListener('click', toggleMenu);
+if (menuOverlay) menuOverlay.addEventListener('click', toggleMenu);
+
+
+// --- 2. Initialisation du lecteur Twitch ---
+try {
+    new Twitch.Embed("twitch-embed", {
+        width: "100%",
+        height: "350px",
+        channel: "rvxnnnn",
+        layout: "video",
+        parent: ["xdventur-bit.github.io"]
+    });
+} catch(e) {
+    console.log("Erreur Twitch Embed : ", e);
+}
+
+
+// --- 3. Actualisation des données (Kill Feed / Données du site) ---
+function refreshHubData() {
+    console.log("Actualisation des données du Hub en cours...");
+    // Tu pourras placer ici tes futurs appels (fetch/API) pour mettre à jour 
+    // les éliminations du Kill Feed en direct sans recharger la page.
+}
+
+// Actualisation automatique toutes les 30 secondes (par exemple)
+setInterval(refreshHubData, 30000);
