@@ -9,29 +9,31 @@ const gameData = {
     ]
 };
 
-// 2. Fonction pour récupérer tes vraies stats en direct depuis l'API Fortnite
+// 2. Affichage direct de tes stats de secours (1.78 K/D et 544 victoires) + tentative API[span_1](start_span)[span_1](end_span)
 async function fetchFortniteStats() {
+    // Affichage immédiat pour éviter les blancs sur mobile
+    const kdEl = document.getElementById('stat-kd');
+    const winsEl = document.getElementById('stat-wins');
+    
+    if (kdEl && kdEl.innerText === "-") kdEl.innerText = "1.78";
+    if (winsEl && winsEl.innerText === "-") winsEl.innerText = "544";
+
     try {
         let response = await fetch('https://fortnite-api.com/v2/stats/br/v2?name=Twitch%20Rvxnn');
         let data = await response.json();
 
         if (data.status === 200 && data.data) {
             let stats = data.data.stats.all.overall;
+            let kd = stats.kd ? stats.kd.toFixed(2) : "1.78";
+            let wins = stats.wins || 544;
 
-            let kd = stats.kd ? stats.kd.toFixed(2) : "0.00";
-            let wins = stats.wins || 0;
-
-            // Injection dans ton HTML pour le profil
-            const kdEl = document.getElementById('stat-kd');
-            const winsEl = document.getElementById('stat-wins');
-            
             if (kdEl) kdEl.innerText = kd;
             if (winsEl) winsEl.innerText = wins;
 
-            console.log("Stats Fortnite synchronisées pour assaut-fortuit8 !");
+            console.log("Stats Fortnite synchronisées !");
         }
     } catch (error) {
-        console.log("Erreur lors de la récupération des stats Fortnite :", error);
+        console.log("Mode hors-ligne / API bloquée par le navigateur, utilisation des stats par défaut.");
     }
 }
 
@@ -119,6 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderHubFeed();
 });
 
-// 6. Actualisation automatique des stats Fortnite toutes les 2 minutes (120000 ms)
+// 6. Actualisation automatique toutes les 2 minutes (120000 ms)
 setInterval(fetchFortniteStats, 120000);
-                            
+    
