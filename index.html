@@ -261,6 +261,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
         }
 
+        /* Panneau "Stream Prochainement" (S'affiche si hors-ligne) */
         #offline-banner {
             display: none;
             flex-direction: column;
@@ -353,8 +354,8 @@
 </head>
 <body>
 
-    <!-- PAGE D'ACCUEIL (Plus de onclick ici) -->
-    <div id="landing-page">
+    <!-- PAGE D'ACCUEIL -->
+    <div id="landing-page" onclick="enterSite()">
         <div class="landing-container">
             <div class="logo-wrapper">
                 <svg viewBox="0 0 400 400" width="100%" height="100%">
@@ -376,6 +377,7 @@
 
     <!-- SITE PRINCIPAL -->
     <div id="main-app">
+        <!-- MENU EN HAUT -->
         <header>
             <div class="header-left">
                 <div class="header-logo">
@@ -394,6 +396,7 @@
             </nav>
         </header>
 
+        <!-- ZONE DE GLISSEMENT -->
         <div id="content-viewport">
             <div class="slider-track" id="sliderTrack">
                 
@@ -401,15 +404,20 @@
                 <div class="page-content">
                     <div class="page-inner">
                         <h2 class="page-title">Live Stream</h2>
+                        
                         <div class="stream-container">
+                            <!-- Le lecteur Twitch avec rvxnnnn (4 'n') -->
                             <div class="stream-embed" id="livePlayerWrapper">
                                 <iframe src="https://player.twitch.tv/?channel=rvxnnnn&parent=codepen.io" frameborder="0" allowfullscreen="true"></iframe>
                             </div>
+
+                            <!-- Message si le stream est coupé -->
                             <div id="offline-banner">
                                 <h3>🔴 Stream Prochainement</h3>
                                 <p>RVXNN est actuellement hors-ligne. Reviens plus tard pour ne pas rater le prochain live !</p>
                             </div>
                         </div>
+
                         <a href="https://www.twitch.tv/rvxnnnn" target="_blank" class="twitch-btn">📺 Visiter la chaîne Twitch</a>
                     </div>
                 </div>
@@ -469,5 +477,31 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function enterSite() {
+            document.getElementById('landing-page').classList.add('hidden');
+            document.getElementById('main-app').classList.add('active');
+        }
+
+        function switchSlide(index, btnElement) {
+            const track = document.getElementById('sliderTrack');
+            track.style.transform = `translateX(-${index * 25}%)`;
+
+            document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            btnElement.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+
+        // Change à 'false' pour afficher le panneau "Stream Prochainement" quand il est hors-ligne :
+        const isLive = true; 
+
+        if (!isLive) {
+            document.getElementById('livePlayerWrapper').style.display = 'none';
+            document.getElementById('offline-banner').style.display = 'flex';
+        }
+    </script>
 </body>
-</html>
+    </html>
+    
