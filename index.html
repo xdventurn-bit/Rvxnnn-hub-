@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dojo Hub</title>
+    <title>RVXNN - Hub & Kill Feed</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,12 +15,12 @@
     <nav id="slide-menu" class="slide-menu">
         <button id="close-btn" class="close-btn" aria-label="Fermer le menu">&times;</button>
         <div class="menu-header">
-            <h2>Dojo Hub</h2>
+            <h2>RVXNN Hub</h2>
         </div>
         <ul class="menu-links">
             <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#cours">Nos Cours</a></li>
-            <li><a href="#planning">Planning</a></li>
+            <li><a href="#killfeed">Kill Feed</a></li>
+            <li><a href="#twitch">Stream Twitch</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
@@ -28,19 +28,55 @@
     <!-- Overlay sombre quand le menu est ouvert -->
     <div id="menu-overlay" class="menu-overlay"></div>
 
-    <!-- Contenu Principal -->
+    <!-- Contenu Principal de ton site -->
     <main class="main-content">
-        <header class="hero">
-            <h1>Bienvenue sur votre Dojo Hub</h1>
-            <p>Votre espace d'entraînement et de gestion accessible partout.</p>
+        <header class="hero-header">
+            <div class="logo-container">
+                <span class="badge">锐</span>
+            </div>
+            <h1>RVXNN // KILL FEED</h1>
+            <a href="#accueil" class="retour-accueil">RETOUR ACCUEIL</a>
         </header>
 
-        <section id="accueil" class="section">
-            <h2>Tableau de bord</h2>
-            <p>Sélectionnez une option dans le menu coulissant pour naviguer à travers les sections du dojo.</p>
+        <section id="killfeed" class="section-killfeed">
+            <div class="killfeed-card">
+                <div class="killfeed-top">
+                    <span class="title-elimination">dernière élimination</span>
+                    <span class="live-indicator"><span class="dot"></span> sync stream live</span>
+                </div>
+                
+                <div class="player-info">
+                    <div class="avatar-badge">Z9</div>
+                    <div class="player-details">
+                        <h2>Zetros_99</h2>
+                        <p class="platform-mode">Plateforme : PC // Mode : Ranked Unreal</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">arme fatale</span>
+                        <span class="stat-value weapon">Pompe Souffle-Dragon</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">dégâts infligés</span>
+                        <span class="stat-value damage">200 HP <span class="headshot">(Headshot)</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Lecteur Twitch -->
+        <section id="twitch" class="twitch-section">
+            <div class="twitch-card">
+                <p class="offline-title">Rvxnnnn est hors ligne.</p>
+                <p class="offline-desc">Apprenez-en plus sur eux sur leur chaîne !</p>
+                <a href="https://twitch.tv/rvxnnnn" target="_blank" class="twitch-link">▶ Aller sur la chaîne de Rvxnnnn</a>
+            </div>
         </section>
     </main>
 
     <script src="script.js"></script>
 </body>
-</html>
+        </html>
+                                         
