@@ -3,80 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RVXNN - Hub & Kill Feed</title>
-    <link rel="stylesheet" href="style.css">
+    <title>RVXNN // Dojo Hub</title>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --panel-bg: #080b11;
+            --cyan-neon: #00f5d4;
+            --violet-neon: #9146ff;
+            --danger-red: #ff1e1e;
+            --text-main: #ffffff;
+            --text-muted: #8b949e;
+            --border-color: #21262d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- LANDING PAGE --- */
+        #landing-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #0a0e17 0%, #000000 100%);
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #landing-page.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .landing-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .logo-wrapper {
+            width: 180px;
+            height: 180px;
+            filter: drop-shadow(0 0 25px rgba(255, 30, 30, 0.5));
+            transition: transform 0.3s ease;
+        }
+
+        .landing-container:hover .logo-wrapper {
+            transform: scale(1.05);
+        }
+
+        .enter-btn {
+            background: linear-gradient(135deg, var(--danger-red), #8b0000);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 30, 30, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        .enter-btn:hover {
+            box-shadow: 0 0 30px rgba(255, 30, 30, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .hint-text {
+            color: var(--text-muted);
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- SITE PRINCIPAL --- */
+        #main-app {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        #main-app.active {
+            display: flex;
+        }
+
+        /* --- MENU EN HAUT --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background-color: var(--panel-bg);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            gap: 15px;
+            overflow: hidden;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .header-logo {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #ffffff, var(--danger-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-link {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .nav-link:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 30, 30, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--text-main);
+            border-color: var(--danger-red);
+            background-color: rgba(255, 30, 30, 0.2);
+            box-shadow: 0 0 10px rgba(255, 30, 30, 0.3);
+        }
+
+        /* --- ZONE DE GLISSEMENT --- */
+        #content-viewport {
+            flex: 1;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider-track {
+            display: flex;
+            width: 400%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page-content {
+            width: 25%;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page-inner {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h2.page-title {
+            font-size: 22px;
+            color: var(--danger-red);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .card {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        /* Styles du lecteur & Statut Stream */
+        .stream-container {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #111;
+        }
+
+        .stream-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            width: 100%;
+        }
+
+        .stream-embed iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        #offline-banner {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #080b11, #161b22);
+            padding: 50px 20px;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px dashed var(--danger-red);
+            gap: 15px;
+        }
+
+        #offline-banner h3 {
+            font-size: 20px;
+            color: var(--danger-red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #offline-banner p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .twitch-btn {
+            display: block;
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--violet-neon), #6441a5);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(145, 70, 255, 0.4);
+            transition: transform 0.2s ease;
+        }
+
+        .twitch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(145, 70, 255, 0.8);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--panel-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .big-avatar {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--violet-neon), var(--cyan-neon));
+            display: flex; justify-content: center; align-items: center;
+            font-size: 28px; font-weight: 900;
+        }
+
+        .rank-tag {
+            display: inline-block;
+            background: var(--cyan-neon); color: #000;
+            padding: 3px 10px; border-radius: 4px;
+            font-weight: bold; font-size: 11px; margin-top: 6px;
+        }
+
+        .feed-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--panel-bg); border-radius: 6px; padding: 12px 18px;
+            margin-bottom: 10px; border: 1px solid var(--border-color);
+        }
+        .feed-item.kill { border-left: 4px solid var(--cyan-neon); }
+        .feed-item.death { border-left: 4px solid var(--danger-red); }
+
+        .feed-player { display: flex; align-items: center; gap: 12px; }
+        .feed-avatar {
+            width: 35px; height: 35px; border-radius: 50%; background: #161b22;
+            display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 13px;
+        }
+        .player-name { font-weight: bold; font-size: 15px; }
+        .weapon-tag { font-size: 11px; color: var(--text-muted); }
+        .match-info { text-align: right; font-size: 12px; color: var(--text-muted); }
+    </style>
 </head>
 <body>
 
-    <!-- Bouton pour ouvrir le menu -->
-    <button id="menu-btn" class="menu-btn" aria-label="Ouvrir le menu">☰</button>
-
-    <!-- Menu Coulissant (Slide Menu) -->
-    <nav id="slide-menu" class="slide-menu">
-        <button id="close-btn" class="close-btn" aria-label="Fermer le menu">&times;</button>
-        <div class="menu-header">
-            <h2>RVXNN Hub</h2>
-        </div>
-        <ul class="menu-links">
-            <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#killfeed">Kill Feed</a></li>
-            <li><a href="#twitch">Stream Twitch</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- Overlay sombre quand le menu est ouvert -->
-    <div id="menu-overlay" class="menu-overlay"></div>
-
-    <!-- Contenu Principal de ton site -->
-    <main class="main-content">
-        <header class="hero-header">
-            <div class="logo-container">
-                <span class="badge">锐</span>
+    <!-- PAGE D'ACCUEIL (Plus de onclick ici) -->
+    <div id="landing-page">
+        <div class="landing-container">
+            <div class="logo-wrapper">
+                <svg viewBox="0 0 400 400" width="100%" height="100%">
+                    <defs>
+                        <linearGradient id="badge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ff1e1e" />
+                            <stop offset="100%" stop-color="#550000" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" rx="24" fill="#040507" />
+                    <polygon points="200,30 350,90 320,310 200,370 80,310 50,90" fill="#0b0f17" stroke="url(#badge-gradient)" stroke-width="5" />
+                    <text x="200" y="235" font-family="'Arial Black', sans-serif" font-weight="900" font-size="140" fill="#ffffff" text-anchor="middle">锐</text>
+                </svg>
             </div>
-            <h1>RVXNN // KILL FEED</h1>
-            <a href="#accueil" class="retour-accueil">RETOUR ACCUEIL</a>
+            <button class="enter-btn">ENTRER</button>
+            <p class="hint-text">Clique n'importe où pour accéder au hub</p>
+        </div>
+    </div>
+
+    <!-- SITE PRINCIPAL -->
+    <div id="main-app">
+        <header>
+            <div class="header-left">
+                <div class="header-logo">
+                    <svg viewBox="0 0 400 400" width="100%" height="100%">
+                        <polygon points="200,30 350,90 320,310 200,370 80,310 50,90" fill="#0b0f17" stroke="#ff1e1e" stroke-width="6" />
+                        <text x="200" y="235" font-family="'Arial Black', sans-serif" font-weight="900" font-size="140" fill="#ffffff" text-anchor="middle">锐</text>
+                    </svg>
+                </div>
+                <span class="header-title">RVXNN</span>
+            </div>
+            <nav id="navMenu">
+                <button class="nav-link active" onclick="switchSlide(0, this)">Stream</button>
+                <button class="nav-link" onclick="switchSlide(1, this)">Profil</button>
+                <button class="nav-link" onclick="switchSlide(2, this)">Kills</button>
+                <button class="nav-link" onclick="switchSlide(3, this)">Morts</button>
+            </nav>
         </header>
 
-        <section id="killfeed" class="section-killfeed">
-            <div class="killfeed-card">
-                <div class="killfeed-top">
-                    <span class="title-elimination">dernière élimination</span>
-                    <span class="live-indicator"><span class="dot"></span> sync stream live</span>
-                </div>
+        <div id="content-viewport">
+            <div class="slider-track" id="sliderTrack">
                 
-                <div class="player-info">
-                    <div class="avatar-badge">Z9</div>
-                    <div class="player-details">
-                        <h2>Zetros_99</h2>
-                        <p class="platform-mode">Plateforme : PC // Mode : Ranked Unreal</p>
+                <!-- 1. STREAM -->
+                <div class="page-content">
+                    <div class="page-inner">
+                        <h2 class="page-title">Live Stream</h2>
+                        <div class="stream-container">
+                            <div class="stream-embed" id="livePlayerWrapper">
+                                <iframe src="https://player.twitch.tv/?channel=rvxnnnn&parent=codepen.io" frameborder="0" allowfullscreen="true"></iframe>
+                            </div>
+                            <div id="offline-banner">
+                                <h3>🔴 Stream Prochainement</h3>
+                                <p>RVXNN est actuellement hors-ligne. Reviens plus tard pour ne pas rater le prochain live !</p>
+                            </div>
+                        </div>
+                        <a href="https://www.twitch.tv/rvxnnnn" target="_blank" class="twitch-btn">📺 Visiter la chaîne Twitch</a>
                     </div>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <span class="stat-label">arme fatale</span>
-                        <span class="stat-value weapon">Pompe Souffle-Dragon</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">dégâts infligés</span>
-                        <span class="stat-value damage">200 HP <span class="headshot">(Headshot)</span></span>
+                <!-- 2. PROFIL -->
+                <div class="page-content">
+                    <div class="page-inner">
+                        <h2 class="page-title">Profil Joueur</h2>
+                        <div class="profile-header">
+                            <div class="big-avatar">R</div>
+                            <div>
+                               <h1>RVXNN</h1>
+                               <span class="rank-tag">Unreal Division</span>
+                            </div>
+                        </div>
+                        <div class="cards-grid">
+                            <div class="card"><h3>K/D Ratio</h3><p style="font-size:24px; color:var(--cyan-neon); font-weight:bold;">5.42</p></div>
+                            <div class="card"><h3>Victoires</h3><p style="font-size:24px; font-weight:bold;">118</p></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Section Lecteur Twitch -->
-        <section id="twitch" class="twitch-section">
-            <div class="twitch-card">
-                <p class="offline-title">Rvxnnnn est hors ligne.</p>
-                <p class="offline-desc">Apprenez-en plus sur eux sur leur chaîne !</p>
-                <a href="https://twitch.tv/rvxnnnn" target="_blank" class="twitch-link">▶ Aller sur la chaîne de Rvxnnnn</a>
-            </div>
-        </section>
-    </main>
+                <!-- 3. KILLS -->
+                <div class="page-content">
+                    <div class="page-inner">
+                        <h2 class="page-title">Historique des Kills</h2>
+                        <div class="feed-item kill">
+                            <div class="feed-player">
+                                <div class="feed-avatar" style="color: var(--cyan-neon);">Z9</div>
+                                <div>
+                                    <div class="player-name">Zetros_99</div>
+                                    <div class="weapon-tag">Pompe Spas-12</div>
+                                </div>
+                            </div>
+                            <div class="match-info">Il y a 3 min</div>
+                        </div>
+                    </div>
+                </div>
 
-    <script src="script.js"></script>
+                <!-- 4. MORTS -->
+                <div class="page-content">
+                    <div class="page-inner">
+                        <h2 class="page-title">Dernières Morts</h2>
+                        <div class="feed-item death">
+                            <div class="feed-player">
+                                <div class="feed-avatar" style="color: var(--danger-red);">GO</div>
+                                <div>
+                                    <div class="player-name">Gotaga</div>
+                                    <div class="weapon-tag">Sniper Lourd</div>
+                                </div>
+                            </div>
+                            <div class="match-info">Il y a 12 min</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </body>
-        </html>
-                                         
+</html>
