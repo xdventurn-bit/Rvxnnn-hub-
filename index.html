@@ -383,23 +383,39 @@
                 </div>
 
                 <!-- 2. PROFIL -->
+                                <!-- 2. PROFIL -->
                 <div class="page-content">
                     <div class="page-inner">
                         <h2 class="page-title">Profil Joueur</h2>
-                        <div class="profile-header">
-                            <div class="big-avatar">R</div>
-                            <div>
-                               <h1>RVXNN</h1>
-                               <span class="rank-tag">Unreal Division</span>
-                            </div>
-                        </div>
-                        <div class="cards-grid">
-                         <div class="card"><h3>K/D Ratio</h3><p style="font-size:24px; color:var(--cyan-neon); font-weight:bold;" id="stat-kd">1.78</p></div>
-<div class="card"><h3>Victoires</h3><p style="font-size:24px; font-weight:bold;" id="stat-wins">544</p></div>
+                        
+                        <div class="profile-header" style="background: linear-gradient(135deg, #0d1117, #161b22); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 20px; position: relative; overflow: hidden;">
                             
+                            <!-- Avatar avec liseré et drapeau -->
+                            <div style="position: relative; flex-shrink: 0;">
+                                <div style="width: 75px; height: 75px; border-radius: 50%; border: 3px solid #ff477e; overflow: hidden; box-shadow: 0 0 15px rgba(255, 71, 126, 0.4);">
+                                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <span style="position: absolute; bottom: 0; right: 0; font-size: 16px; background: #000; border-radius: 50%; padding: 1px;" title="France">🇫🇷</span>
+                            </div>
+
+                            <!-- Infos du joueur -->
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="#2bd95e"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                    <h1 style="font-size: 18px; font-weight: 800; color: #ffffff; margin: 0;">Twitch Rvxnn</h1>
+                                </div>
+                                <span class="rank-tag">Unreal Division</span>
+                            </div>
+
+                        </div>
+
+                        <div class="cards-grid" style="margin-top: 15px;">
+                            <div class="card"><h3>K/D Ratio</h3><p style="font-size:24px; color:var(--cyan-neon); font-weight:bold;" id="stat-kd">1.78</p></div>
+                            <div class="card"><h3>Victoires</h3><p style="font-size:24px; font-weight:bold;" id="stat-wins">544</p></div>
                         </div>
                     </div>
                 </div>
+                
 
                 <!-- 3. KILLS -->
                 <div class="page-content">
