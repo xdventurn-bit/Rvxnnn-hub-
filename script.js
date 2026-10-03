@@ -12,7 +12,7 @@ const gameData = {
 // 2. Fonction pour récupérer tes vraies stats en direct depuis l'API Fortnite
 async function fetchFortniteStats() {
     try {
-        let response = await fetch('https://fortnite-api.com/v2/stats/br/v2?name=assaut-fortuit8');
+        let response = await fetch('https://fortnite-api.com/v2/stats/br/v2?name=Twitch%20Rvxnn');
         let data = await response.json();
 
         if (data.status === 200 && data.data) {
